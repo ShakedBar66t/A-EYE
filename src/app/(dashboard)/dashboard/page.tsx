@@ -1,11 +1,28 @@
-import { FC } from 'react'
+import SignOutButton from '@/cmps/SignOutButton'
+import { options } from '@/pages/api/auth/[...nextauth]'
+import { getServerSession } from 'next-auth'
+import { notFound } from 'next/navigation'
+import { FC, ReactNode } from 'react'
+
 
 interface pageProps {
-  
+  children: ReactNode
+
 }
 
-const page: FC<pageProps> = ({}) => {
-  return <div>page</div>
+
+
+const page = async ({ children }: pageProps ) => {
+  const session = await getServerSession(options)
+  if (!session) notFound()
+
+
+  return (
+    <div className='flex flex-col'>
+      {session?.user?.fullName}
+      <SignOutButton/>
+    </div>
+  )
 }
 
 export default page

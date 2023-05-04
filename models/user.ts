@@ -17,9 +17,14 @@ const UserSchema = new Schema({
         type: String,
         required: [true, "Password is required"],
         select: false
+    },
+    interests: {
+        type: [String],
+        maxlength: [10, 'Interests array cannot exceed 10 items']
     }
 })
 
 const User = models.User || model("User", UserSchema)
+
 
 export default User

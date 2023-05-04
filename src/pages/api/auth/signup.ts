@@ -2,60 +2,59 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { hash } from "bcryptjs"
 import { connectToMongoDB } from "../../../lib/mongodb"
 import User from "../../../../models/user"
-import { IUser } from "../../../../types" 
-import mongoose from "mongoose"
+import { IUser } from "../../../../types"
+import bodyParser from 'body-parser'
 
+const jsonParser = bodyParser.json()
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    connectToMongoDB().catch(err => res.json(err))
+    try {
+        await connectToMongoDB();
 
-    if (req.method === "POST") {
-        if (!req.body) return res.status(400).json({ error: "Data is missing" })
+        if (req.method === "POST") {
+            jsonParser(req, res, async () => {
+                if (!req.body) return res.status(400).json({ error: "Data is missing" })
 
-        const { fullName, email, password } = req.body
+                const { fullName, email, password, interests } = req.body
 
-        const userExists = await User.findOne({ email })
+                const userExists = await User.findOne({ email })
 
-        if (userExists) {
-            return res.status(409).json({ error: "User Already exists" })
-        }
-        else {
-            if (password.length < 6)
-                return res.status(409).json({ error: "Password should be 6 characters long" })
+                if (userExists) {
+                    return res.status(409).json({ error: "User Already exists" })
+                } else {
+                    if (password.length < 6)
+                        return res.status(409).json({ error: "Password should be 6 characters long" })
 
-            const hashedPassword = await hash(password, 12)
+                    const hashedPassword = await hash(password, 12)
 
-            User.create({
-                fullName,
-                email,
-                password: hashedPassword
-            }, (error: unknown, data: IUser) => {
-                if (error && error instanceof mongoose.Error.ValidationError) {
-                    //mongo db will return array
-                    // but we only want to show one error at a time
+                    const newUser: IUser = new User({
+                        interests,
+                        fullName,
+                        email,
+                        password: hashedPassword,
+                    })
 
-                    for (let field in error.errors) {
-                        const msg = error.errors[field].message
-                        return res.status(409).json({ error: msg })
-                    }
+                    const savedUser = await newUser.save() as IUser
+
+                    console.log('User saved to database:', savedUser);
+                    return res.status(201).json({
+                        success: true,
+                        user: {
+                            email: savedUser.email,
+                            fullName: savedUser.fullName,
+                            _id: savedUser._id,
+                            interests: savedUser.interests
+                        }
+                    });
                 }
-
-                const user = {
-                    email: data.email,
-                    fullName: data.fullName,
-                    _id: data._id
-                }
-
-                return res.status(201).json({
-                    success: true,
-                    user
-                })
             })
+        } else {
+            res.status(405).json({ error: "Method Not Allowed" })
         }
-    }
-    else {
-        res.status(405).json({ error: "Method Not Allowed" })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
-export default handler
+export default handler;

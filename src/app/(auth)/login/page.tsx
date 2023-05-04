@@ -1,8 +1,12 @@
 "use client"
 
+import Email from 'next-auth/providers/email'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import React, { FC, useState } from 'react'
+import { loginUser } from '../../../../helpers'
+import { AxiosError } from 'axios'
 
 interface pageProps {
 
@@ -10,10 +14,42 @@ interface pageProps {
 
 const page: FC<pageProps> = ({ }) => {
 
-    const [showLoginForm, setShowLoginForm] = useState(false)
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [submitError, setSubmitError] = useState("")
+    const router = useRouter()
 
-    const handleLoginClick = () => {
-        setShowLoginForm(!showLoginForm)
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value)
+    }
+
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value)
+    }
+
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
+        try {
+            setLoading(true)
+
+            const loginRes = await loginUser({ email, password })
+
+            if (loginRes && !loginRes.ok) {
+                setSubmitError(loginRes.error || "")
+            }
+            else {
+                router.push("/dashboard")
+            }
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const errorMsg = error.response?.data?.error
+                setSubmitError(errorMsg)
+            }
+        }
+
+        setLoading(false)
     }
 
     return <div className='flex items-center justify-center flex-col text-center pt-20'>
@@ -33,46 +69,56 @@ const page: FC<pageProps> = ({ }) => {
             />
         </div>
         <h1 className='py-10 text-2xl w-[70vw]'>Picture-perfect moments, without the hassle</h1>
-
-        {showLoginForm ? (
-            <form className='flex flex-col'>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder='Enter email'
-                    className='border border-gray-400 rounded-lg py-2 px-4 mb-2 w-[50vw]'
-                />
-                <input
-                    type="password"
-                    name="password"
-                    className='border border-gray-400 rounded-lg py-2 px-4 mb-2'
-                />
-                <button className='bg-blue-500 text-white py-2 px-4 rounded-lg'>
-                    Login
-                </button>
-                <button
-                    className="mt-[10px] text-gray-400 text-[15px] underline"
-                    onClick={handleLoginClick}>
-                    Go back
-                </button>
-            </form>
-        ) : (
-
-            <div className='flex flex-col'>
-                <button
-                    className="bg-white border border-blue-500 hover:bg-blue-500 hover:text-white transition duration-500 ease-in-out rounded-lg py-2 px-4 w-[50vw] mb-2"
-                    onClick={handleLoginClick}>
-                    Login
-                </button>
-                <div>
-                    Dont have an account? 
-                    <Link className='ml-[4px] text-blue-700 underline' href='/signup'>
-                        Sign up
+        <div className='border border-black p-[20px]'>
+            <h2 className='mb-[20px] '>Login</h2>
+            <form onSubmit={handleLogin}>
+                <div className='input-container'>
+                    <input
+                        type="email"
+                        id='email'
+                        autoComplete="off"
+                        onChange={handleEmailChange}
+                        className='text-input'
+                    />
+                    <label
+                        htmlFor="email"
+                        className='label'
+                    >Email</label>
+                </div>
+                <div className='pt-[10px]'>
+                    <div className='input-container'>
+                        <input
+                            type="password"
+                            id="password"
+                            onChange={handlePasswordChange}
+                            autoComplete='off'
+                            className='text-input' />
+                        <label
+                            htmlFor="password"
+                            className='label'
+                        >Password</label>
+                    </div>
+                </div>
+                <div className='text-sm mt-[10px]'>
+                    Dont have an account?
+                    <Link href='/signup' className='pl-[5px] text-blue-700 underline'>Sign up
                     </Link>
                 </div>
 
-            </div>
-        )}
+                <button
+                    type='submit'
+                    className='bg-blue-400 border border-black rounded-lg w-full mt-2 py-[6px] hover:bg-blue-300'>
+                    Login
+                </button>
+
+                {
+                    submitError &&
+                    <div className='text-sm bg-red-500' >
+                        {submitError}
+                    </div >
+                }
+            </form>
+        </div>
     </div>
 }
 

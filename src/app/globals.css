@@ -5,3 +5,65 @@
 .underline:hover {
     text-decoration: underline;
 }
+
+.input-container {
+    width: 280px;
+    position: relative;
+
+}
+
+.label {
+    position: absolute;
+    left: 10px;
+    top: 14px;
+    transition: all 0.2s;
+    padding: 0 2px;
+    z-index: 1;
+    color: #b3b3b3;
+}
+
+.text-input {
+    padding: 0.8rem;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #382f26;
+    background-color: #fff;
+    border-radius: 5px;
+    font-size: 18px;
+    outline: none;
+    transition: all .3s;
+    color: rgba(0, 0, 0, 0.903);
+}
+
+.label::before {
+    content: "";
+    height: 5px;
+    background-color: #fff;
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 100%;
+    z-index: -1;
+}
+
+.text-input:focus {
+    border: 2px solid #0091ff;
+}
+
+.text-input:focus+.label,
+.filled {
+    top: -10px;
+    color: #0091ff;
+    font-size: 14px;
+}
+
+.text-input::placeholder {
+    font-size: 16px;
+    opacity: 0;
+    transition: all .3s;
+}
+
+.text-input:focus::placeholder {
+    opacity: 1;
+    animation-delay: 0.2s;
+}
