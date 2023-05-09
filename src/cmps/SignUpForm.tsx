@@ -1,8 +1,8 @@
 "use client"
 
 import { FC, useState } from 'react';
-import { inputErrors } from '../../types/error';
-import { loginUser } from '../../helpers';
+import { inputErrors } from '../types/error';
+import { loginUser } from '../helpers';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 

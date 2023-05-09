@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { FC, useState } from 'react'
-import { loginUser } from '../../../../helpers'
+import { loginUser } from '../../../helpers'
 import { AxiosError } from 'axios'
 
 interface pageProps {
