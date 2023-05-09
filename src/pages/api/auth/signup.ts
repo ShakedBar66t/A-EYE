@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { hash } from "bcryptjs"
 import { connectToMongoDB } from "../../../lib/mongodb"
 import User from "../../../../models/user"
-import { IUser } from "../../../../types"
+import { IUser } from "../../../../types/db"
 import bodyParser from 'body-parser'
 
 const jsonParser = bodyParser.json()

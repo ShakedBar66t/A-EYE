@@ -4,7 +4,7 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "../../../../models/user";
 import { compare } from "bcryptjs";
-import { IUser } from "../../../../types";
+import { IUser } from "../../../../types/db";
 
 export const options: NextAuthOptions = {
     providers: [

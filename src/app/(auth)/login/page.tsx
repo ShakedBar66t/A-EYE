@@ -113,7 +113,7 @@ const page: FC<pageProps> = ({ }) => {
 
                 {
                     submitError &&
-                    <div className='text-sm bg-red-500' >
+                    <div className='text-md text-red-500 pt-[10px]' >
                         {submitError}
                     </div >
                 }

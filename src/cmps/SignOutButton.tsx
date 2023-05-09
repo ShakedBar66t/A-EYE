@@ -9,12 +9,14 @@ interface SignOutButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> { }
 
 const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
     const [isSigninOut, setIsSigninOut] = useState<boolean>(false)
+    const router = useRouter()
 
 
     const handleSignOut = async () => {
         setIsSigninOut(true)
         try {
             await signOut()
+            router.push('/login') // redirect to login page
         } catch (error) {
             toast.error('There was a problem signing out')
         } finally {
