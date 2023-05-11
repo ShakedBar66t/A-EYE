@@ -1,10 +1,19 @@
 "use client"
 
 import { FC, useState } from 'react';
-import { inputErrors } from '../types/error';
-import { loginUser } from '../helpers';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { Rubik } from 'next/font/google';
+import Image from 'next/image';
+import Link from 'next/link';
+import { inputErrors } from '@/types/error';
+import { loginUser } from '@/helpers';
+
+
+const rubik = Rubik({
+    subsets: ['latin'],
+    weight: '500'
+})
 
 interface InputField {
     name: string;
@@ -13,8 +22,12 @@ interface InputField {
     // Add any other relevant information here
 }
 
-const SignUpForm: FC = () => {
 
+interface SignUpFormProps {
+
+}
+
+const SignUpForm: FC<SignUpFormProps> = ({ }) => {
     const [data, setData] = useState({
         fullName: "",
         email: "",
@@ -24,7 +37,6 @@ const SignUpForm: FC = () => {
 
     const [currentInput, setCurrentInput] = useState<number>(0);
     const [formData, setFormData] = useState<any>({});
-    const [interests, setInterests] = useState<string[]>([]);
     const [validationErrors, setValidationErrors] = useState<inputErrors[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [submitError, setSubmitError] = useState<string>("")
@@ -32,10 +44,10 @@ const SignUpForm: FC = () => {
 
 
     const inputFields: InputField[] = [
-        { name: 'fullName', type: 'text', placeholder: 'Full name' },
+        { name: 'fullName', type: 'text', placeholder: 'What is your full name?', },
         { name: 'email', type: 'email', placeholder: 'Email' },
         { name: 'password', type: 'password', placeholder: 'Password' },
-        { name: 'interests', type: 'checkboxes', placeholder: 'Interests' },
+        { name: 'interests', type: 'checkboxes', placeholder: 'Tell us what you like' },
     ];
 
     const validateData = (): boolean => {
@@ -58,6 +70,7 @@ const SignUpForm: FC = () => {
         else {
             return true
         }
+
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,15 +91,11 @@ const SignUpForm: FC = () => {
             setData({ ...data, interests: data.interests.filter((interest) => interest !== name) });
         }
     };
-
-
     const handleNextClick = () => {
         setCurrentInput(currentInput + 1);
     };
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-
         const isValid = validateData()
 
         if (isValid) {
@@ -117,15 +126,25 @@ const SignUpForm: FC = () => {
             // router.push('/dashboard')
         }
     };
-
     return (
-        <div>
+        <div className='flex flex-col'>
+            <div className='flex flex-row justify-center'>
+                <Link className='bg-blue-500' href='/login'>
+                    <Image
+                        src='/return arrow.svg'
+                        alt='logo2'
+                        width={20}
+                        height={20}
+                    />
+                </Link>
+                <h2 className='text-red-500 mx-[20px]'>Register</h2>
+            </div>
             <form onSubmit={handleSubmit}>
                 {inputFields.map((inputField, index) => {
                     if (index === currentInput) {
                         if (inputField.type === 'checkboxes') {
                             return (
-                                <div key={inputField.name}>
+                                <div className='my-[200px]' key={inputField.name}>
                                     <label>{inputField.placeholder}</label>
                                     {['Hiking', 'Reading', 'Cooking', 'Photography', 'Traveling'].map((interest, index) => (
                                         <div key={interest}>
@@ -144,9 +163,7 @@ const SignUpForm: FC = () => {
                                         disabled={validationErrors.length > 0}
                                     >Submit</button>
                                 </div>
-
                             );
-
                         } else {
                             const inputError = validationErrors.find(
                                 (error) => error[inputField.name]
@@ -155,9 +172,9 @@ const SignUpForm: FC = () => {
                                 } w-full px-3 py-2 rounded mb-4`;
                             return (
                                 <div key={inputField.name}>
+                                    <label>{inputField.placeholder}</label>
                                     <input
                                         type={inputField.type}
-                                        placeholder={inputField.placeholder}
                                         name={inputField.name}
                                         value={formData[inputField.name]}
                                         onChange={handleInputChange}
@@ -169,7 +186,7 @@ const SignUpForm: FC = () => {
                                     )}
                                     <button
                                         type="button"
-                                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                                        className="mt-4 px-[40px] py-2 bg-blue-500 text-white rounded disabled:opacity-50"
                                         onClick={handleNextClick}
                                         disabled={validationErrors.length > 0}
                                     >
@@ -184,7 +201,7 @@ const SignUpForm: FC = () => {
                 })}
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default SignUpForm;
+export default SignUpForm

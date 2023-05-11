@@ -72,32 +72,21 @@ const page: FC<pageProps> = ({ }) => {
         <div className='border border-black p-[20px]'>
             <h2 className='mb-[20px] '>Login</h2>
             <form onSubmit={handleLogin}>
-                <div className='input-container'>
+                <div className='inputBox'>
                     <input
-                        type="email"
-                        id='email'
-                        autoComplete="off"
-                        onChange={handleEmailChange}
-                        className='text-input'
-                    />
-                    <label
-                        htmlFor="email"
-                        className='label'
-                    >Email</label>
+                        type="text"
+                        required={true}
+                        autoComplete='off'
+                        onChange={handleEmailChange} />
+                    <span>Email</span>
                 </div>
-                <div className='pt-[10px]'>
-                    <div className='input-container'>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={handlePasswordChange}
-                            autoComplete='off'
-                            className='text-input' />
-                        <label
-                            htmlFor="password"
-                            className='label'
-                        >Password</label>
-                    </div>
+                <div className='inputBox mt-[12px]'>
+                    <input
+                        type="password"
+                        required={true}
+                        autoComplete='off'
+                        onChange={handlePasswordChange} />
+                    <span>Password</span>
                 </div>
                 <div className='text-sm mt-[10px]'>
                     Dont have an account?

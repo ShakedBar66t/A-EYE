@@ -2,6 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+.inputBox {
+    position: relative;
+    width: 280px;
+}
+
+.inputBox input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #382f26;
+    background: #fff;
+    border-radius: 5px;
+    outline: none;
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.903);
+}
+
+.inputBox span {
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 1em;
+    color: #b3b3b3;
+    transition: all 0.2s;
+}
+
+.inputBox input:valid~span,
+.inputBox input:focus~span {
+    color: #0091ff;
+    transform: translateX(10px) translateY(-7px);
+    font-size: 14px;
+    padding: 0 0;
+    background: #fff;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-bottom: 2px;
+}
+
+.inputBox:nth-child(2) input:valid~span,
+.inputBox:nth-child(2) input:focus~span {
+    color: #0091ff;
+    border-radius: 2px;
+}
+.inputBox input:valid,
+.inputBox input:focus {
+    border: 1px solid #0091ff;
+}
+
 .underline:hover {
     text-decoration: underline;
 }

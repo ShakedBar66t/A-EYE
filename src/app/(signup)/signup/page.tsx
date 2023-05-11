@@ -6,7 +6,7 @@ interface pageProps {
 }
 
 const page: FC<pageProps> = ({}) => {
-  return <div>
+  return <div className='w-screen h-screen'>
     <SignUpForm />
   </div>
 }
