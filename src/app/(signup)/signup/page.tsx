@@ -1,4 +1,4 @@
-import SignUpForm from '@/cmps/SignUpForm'
+import SignUpForm from '@/components/SignUpForm'
 import { FC } from 'react'
 
 interface pageProps {
@@ -6,7 +6,7 @@ interface pageProps {
 }
 
 const page: FC<pageProps> = ({}) => {
-  return <div className='w-screen h-screen'>
+  return <div className='w-full h-screen'>
     <SignUpForm />
   </div>
 }

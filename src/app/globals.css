@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    box-sizing: border-box;
+}
+
 .inputBox {
     position: relative;
     width: 280px;
@@ -115,3 +119,8 @@
     opacity: 1;
     animation-delay: 0.2s;
 }
+
+.under-input {
+    border: none;
+    border-bottom: 2px solid black;
+  }

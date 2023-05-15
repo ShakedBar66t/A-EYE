@@ -24,7 +24,7 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
         }
     }
     return (
-        <button className='bg-red-500' onClick={handleSignOut} disabled={isSigninOut}>
+        <button className='px-[4px] bg-red-500 text-white rounded-lg ml-auto text-sm' onClick={handleSignOut} disabled={isSigninOut}>
             {isSigninOut ? 'Signing out...' : 'Sign out'}
         </button>
     )

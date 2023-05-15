@@ -45,8 +45,8 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
 
     const inputFields: InputField[] = [
         { name: 'fullName', type: 'text', placeholder: 'What is your full name?', },
-        { name: 'email', type: 'email', placeholder: 'Email' },
-        { name: 'password', type: 'password', placeholder: 'Password' },
+        { name: 'email', type: 'email', placeholder: 'What is your email?' },
+        { name: 'password', type: 'password', placeholder: 'Create a password' },
         { name: 'interests', type: 'checkboxes', placeholder: 'Tell us what you like' },
     ];
 
@@ -94,6 +94,12 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
     const handleNextClick = () => {
         setCurrentInput(currentInput + 1);
     };
+
+    const handlePreviousClick = () => {
+        setCurrentInput(currentInput - 1)
+    }
+
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const isValid = validateData()
@@ -127,17 +133,19 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
         }
     };
     return (
-        <div className='flex flex-col'>
-            <div className='flex flex-row justify-center'>
-                <Link className='bg-blue-500' href='/login'>
-                    <Image
-                        src='/return arrow.svg'
-                        alt='logo2'
-                        width={20}
-                        height={20}
-                    />
-                </Link>
-                <h2 className='text-red-500 mx-[20px]'>Register</h2>
+        <div className='flex flex-col px-[24px]'>
+            <div className='flex h-[90px] items-center px-[24px]'>
+                <div className='hover:bg-gray-200 flex h-[60px] items-center rounded-full'>
+                    <Link className='mx-[20px]' href='/login'>
+                        <Image
+                            src='/return arrow.svg'
+                            alt='logo2'
+                            width={20}
+                            height={20}
+                        />
+                    </Link>
+                </div>
+                <h2 className='mx-[20px]'>Register</h2>
             </div>
             <form onSubmit={handleSubmit}>
                 {inputFields.map((inputField, index) => {
@@ -157,21 +165,33 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                                             <label>{interest}</label>
                                         </div>
                                     ))}
-                                    <button
-                                        type="submit"
-                                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                                        disabled={validationErrors.length > 0}
-                                    >Submit</button>
+                                    <div className='flex justify-between mt-4'>
+                                        {currentInput > 0 && (
+                                            <button
+                                                type="button"
+                                                className="px-[40px] py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                                                onClick={handlePreviousClick}
+                                                disabled={validationErrors.length > 0}
+                                            >
+                                                Previous
+                                            </button>
+                                        )}
+                                        <button
+                                            type="submit"
+                                            className="px-[40px] py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                                            disabled={validationErrors.length > 0}
+                                        >
+                                            Submit
+                                        </button>
+                                    </div>
                                 </div>
                             );
                         } else {
                             const inputError = validationErrors.find(
                                 (error) => error[inputField.name]
                             );
-                            const inputClassName = `border ${inputError ? "border-red-500" : ""
-                                } w-full px-3 py-2 rounded mb-4`;
                             return (
-                                <div key={inputField.name}>
+                                <div className='px-[44px] ' key={inputField.name}>
                                     <label>{inputField.placeholder}</label>
                                     <input
                                         type={inputField.type}
@@ -179,29 +199,44 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                                         value={formData[inputField.name]}
                                         onChange={handleInputChange}
                                         required
-                                        className={inputClassName}
+                                        className='w-full px-3 py-2 focus:border-blue-500 rounded mb-4 under-input focus:outline-0'
                                     />
                                     {inputError && (
                                         <p className="text-red-500 text-sm">{inputError[inputField.name]}</p>
                                     )}
-                                    <button
-                                        type="button"
-                                        className="mt-4 px-[40px] py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                                        onClick={handleNextClick}
-                                        disabled={validationErrors.length > 0}
-                                    >
-                                        Next
-                                    </button>
+                                    <div className='flex justify-end mt-4'>
+                                        {currentInput > 0 && (
+                                            <button
+                                                type="button"
+                                                className="mr-4 px-[40px] py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                                                onClick={handlePreviousClick}
+                                                disabled={validationErrors.length > 0}
+                                            >
+                                                Previous
+                                            </button>
+                                        )}
+                                        <button
+                                            type="button"
+                                            className="px-[40px] py-2 bg-blue-500 text-white rounded disabled:opacity-50 ml-auto"
+                                            onClick={handleNextClick}
+                                            disabled={validationErrors.length > 0}
+                                        >
+                                            Next
+
+                                        </button>
+                                    </div>
                                 </div>
                             );
                         }
-                    } else {
+                    }
+                    else {
                         return null;
                     }
                 })}
             </form>
         </div>
-    )
+    );
+
 }
 
 export default SignUpForm

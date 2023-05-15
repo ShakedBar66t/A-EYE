@@ -1,5 +1,5 @@
-import Navbar from '@/cmps/Navbar'
-import SignOutButton from '@/cmps/SignOutButton'
+import Navbar from '@/components/Navbar'
+import SignOutButton from '@/components/SignOutButton'
 import { options } from '@/pages/api/auth/[...nextauth]'
 import { getServerSession } from 'next-auth'
 import { notFound } from 'next/navigation'
@@ -21,7 +21,6 @@ const page = async ({ children }: pageProps ) => {
     <div className='flex flex-col'>
       <Navbar/>
       {session?.user?.fullName}
-      <SignOutButton/>
     </div>
   )
 }
