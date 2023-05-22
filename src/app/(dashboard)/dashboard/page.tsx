@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
 import SignOutButton from '@/components/SignOutButton'
+import DallE from '@/pages/openai'
 import { options } from '@/pages/api/auth/[...nextauth]'
 import { getServerSession } from 'next-auth'
 import { notFound } from 'next/navigation'
@@ -21,6 +22,7 @@ const page = async ({ children }: pageProps ) => {
     <div className='flex flex-col'>
       <Navbar/>
       {session?.user?.fullName}
+      <DallE />
     </div>
   )
 }
