@@ -40,7 +40,7 @@ const page: FC<pageProps> = ({ }) => {
                 setSubmitError(loginRes.error || "")
             }
             else {
-                router.push("/dashboard")
+                router.push("/home")
             }
         } catch (error) {
             if (error instanceof AxiosError) {

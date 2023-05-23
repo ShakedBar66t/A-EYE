@@ -16,12 +16,17 @@ export default async function handler(req, res) {
         const response = await openai.createImage({
             prompt,
             n: 1,
-            size: '1024x1024',
+            size: "256x256",
         });
 
-        console.log('hello')
+        console.log(`Response: ${JSON.stringify(response.data.data[0].url)}}`);
 
-        return response.send({data: response.data.data})
+
+        res.status(200).json({
+            image: response.data.data[0].url
+        });
+
+
     } catch (e) {
         console.log(`Failed to create Pokémon image: ${e.message}`);
         res.status(500).json({

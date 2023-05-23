@@ -21,44 +21,39 @@ const DallE: FC<DallEProps> = () => {
                 body: JSON.stringify({ prompt: promptRef?.current?.value })
             }).then(resp => resp.json())
 
-            console.log(resp)
-        } catch (error) {
-            console.log(error, 'error')
-
+            console.log(resp.image)
+            setImageUrl(resp.image); // Set the image URL when it is returned
+        } catch (error: any) {
+            console.log(error.message, 'error')
         }
-
     }
+
 
     return (
         <main className="container max-w-4xl mx-auto">
-            <section className="flex items-center gap-2 px-6 py-6">
-                <h2>Prompt</h2>
+            <section className="flex flex-col items-center gap-2 px-6 py-6">
                 <input
                     type="text"
-                    className="w-full outline-none py-2 px-6 bg-blue-600 rounded-3xl text-white text-sm"
-                    placeholder="a woman walking her dog, a ballerina dancing, a dog eating"
-                    defaultValue="dog playing with a ball"
+                    className="w-full outline-none py-2 px-6 bg-gray-200 rounded-3xl text-black text-sm"
+                    placeholder="a woman walking her dog, a ballerina dancing, etc.."
                     ref={promptRef} // Assign the ref to the input element
                 />
+                <button
+                    className="hover:opacity-80 py-2 px-6 bg-lime-600 rounded-3xl text-xs uppercase text-white ml-auto"
+                    onClick={handleGenerateImage}
+                >
+                    Generate
+                </button>
             </section>
 
-            <section className="grid grid-cols-2 gap-4">
-                {/* LEFT */}
-                <div className="flex flex-col gap-6 px-6 py-6">
-                    <button
-                        className="hover:opacity-80 py-2 px-6 bg-lime-600 rounded-3xl text-xs uppercase"
-                        onClick={handleGenerateImage}
-                    >
-                        Generate
-                    </button>
+            <section className="flex justify-center">
 
-                    <div className="bg-gray-600 aspect-square flex items-center justify-center text-white">
-                        {imageUrl ? (
-                            <img src={imageUrl} alt="Generated" className="max-w-full max-h-full" />
-                        ) : (
-                            'Image will show up here'
-                        )}
-                    </div>
+                <div className="bg-gray-600 aspect-square flex items-center justify-center text-white">
+                    {imageUrl ? (
+                        <img src={imageUrl} alt="Generated" className="max-w-full max-h-full" />
+                    ) : (
+                        'Image will show up here'
+                    )}
                 </div>
             </section>
         </main>

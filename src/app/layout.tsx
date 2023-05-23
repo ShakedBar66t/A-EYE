@@ -1,8 +1,8 @@
 import Providers from '@/components/Providers'
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Signika } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const signika = Signika({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
