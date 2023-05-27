@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         const response = await openai.createImage({
             prompt,
             n: 1,
-            size: "256x256",
+            size: "1024x1024"
         });
 
         console.log(`Response: ${JSON.stringify(response.data.data[0].url)}}`);

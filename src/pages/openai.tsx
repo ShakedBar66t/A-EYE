@@ -48,7 +48,7 @@ const DallE: FC<DallEProps> = () => {
 
             <section className="flex justify-center">
 
-                <div className="bg-gray-600 aspect-square flex items-center justify-center text-white">
+                <div className="bg-gray-600 flex items-center justify-center text-white rounded-xl p-10">
                     {imageUrl ? (
                         <img src={imageUrl} alt="Generated" className="max-w-full max-h-full" />
                     ) : (

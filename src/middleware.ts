@@ -9,10 +9,10 @@ export default withAuth(
         const pathname = req.nextUrl.pathname
 
         //Manage route protection
-        const isAuth = await getToken({req})
+        const isAuth = await getToken({ req })
         const isLoginPage = pathname.startsWith('/login')
 
-        const sensitiveRoutes = ['/home']
+        const sensitiveRoutes = ['/home','/about', '/dashboard']
         const isAccessivngSensitiveRoutes = sensitiveRoutes.some((route) => pathname.startsWith(route))
 
         if (isLoginPage) {
@@ -23,7 +23,7 @@ export default withAuth(
             return NextResponse.next()
         }
 
-        if(!isAuth && isAccessivngSensitiveRoutes) {
+        if (!isAuth && isAccessivngSensitiveRoutes) {
             return NextResponse.redirect(new URL('/login', req.url))
         }
 
@@ -41,5 +41,5 @@ export default withAuth(
 )
 
 export const config = {
-    matcher: ['/', '/login', '/home/:path*']
+    matcher: ['/', '/login', '/about', '/dashboard']
 }

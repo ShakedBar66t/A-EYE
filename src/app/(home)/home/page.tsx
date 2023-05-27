@@ -20,7 +20,7 @@ const page = async ({ children }: pageProps ) => {
 
   return (
     <div className='flex flex-col'>
-      <Navbar session={session}/>
+      <Navbar/>
       {/* {session?.user?.fullName} */}
       <DallE />
     </div>
