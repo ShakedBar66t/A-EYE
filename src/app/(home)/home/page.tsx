@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar'
 import SignOutButton from '@/components/SignOutButton'
-import DallE from '@/pages/openai'
+import DallE from '@/pages/DALL-E'
 import { options } from '@/pages/api/auth/[...nextauth]'
 import { getServerSession } from 'next-auth'
 import { notFound } from 'next/navigation'

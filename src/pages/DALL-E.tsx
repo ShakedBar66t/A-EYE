@@ -9,9 +9,12 @@ interface DallEProps { }
 const DallE: FC<DallEProps> = () => {
     const promptRef = useRef<HTMLInputElement>(null); // Specify the type of ref as HTMLInputElement
     const [imageUrl, setImageUrl] = useState<string | null>(); // State to store the generated image URL
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
 
     async function handleGenerateImage() {
         console.log(JSON.stringify({ prompt: promptRef?.current?.value }))
+        setIsLoading(true)
         try {
             const resp = await fetch("/api/DALL-E/image", {
                 method: 'POST',
@@ -22,12 +25,12 @@ const DallE: FC<DallEProps> = () => {
             }).then(resp => resp.json())
 
             console.log(resp.image)
+            setIsLoading(false)
             setImageUrl(resp.image); // Set the image URL when it is returned
         } catch (error: any) {
             console.log(error.message, 'error')
         }
     }
-
 
     return (
         <main className="container max-w-4xl mx-auto">
@@ -47,15 +50,35 @@ const DallE: FC<DallEProps> = () => {
             </section>
 
             <section className="flex justify-center">
-
-                <div className="bg-gray-600 flex items-center justify-center text-white rounded-xl p-10">
-                    {imageUrl ? (
-                        <img src={imageUrl} alt="Generated" className="max-w-full max-h-full" />
-                    ) : (
+                {imageUrl ? (
+                    <div>
+                        <img
+                            src={imageUrl}
+                            alt="Generated"
+                            className="max-w-full max-h-full"
+                            onLoad={() => setIsLoading(false)}
+                        />
+                    </div>
+                ) : null}
+                {isLoading ? (
+                    <div className="flex items-center justify-center">
+                        <div className="relative w-[256px] h-[256px] space-y-3 overflow-hidden rounded-md bg-neutral-800 p-3 shadow before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white hover:shadow-lg before:animate-[shimmer_1.5s_infinite]">
+                            <div className="h-36 w-full rounded-lg bg-neutral-600"></div>
+                            <div className="space-y-3">
+                                <div className="h-5 w-8/12 rounded-full bg-neutral-800">
+                                    <div className="space-y-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ) : null}
+                {!isLoading && !imageUrl ? (
+                    <div className="bg-neutral-800 h-[256px] flex w-[256px] items-center justify-center text-white rounded-xl p-4">
                         'Image will show up here'
-                    )}
-                </div>
+                    </div>
+                ) : null}
             </section>
+
         </main>
     );
 };

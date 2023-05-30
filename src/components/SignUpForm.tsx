@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { inputErrors } from '@/types/error';
 import { loginUser } from '@/helpers';
+import { Carousel } from 'antd';
 
 
 const rubik = Rubik({
@@ -82,15 +83,20 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
     };
 
 
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, checked } = event.target;
-        if (checked) {
-            setData({ ...data, interests: [...data.interests, name] });
-            console.log(data)
-        } else {
-            setData({ ...data, interests: data.interests.filter((interest) => interest !== name) });
-        }
+    const handleCheckboxChange = (interest: string) => {
+        setData((prevData) => {
+            const isChecked = prevData.interests.includes(interest);
+            const updatedInterests = isChecked
+                ? prevData.interests.filter((item) => item !== interest)
+                : [...prevData.interests, interest];
+
+            console.log(updatedInterests, 'interests')
+
+            return { ...prevData, interests: updatedInterests };
+        });
     };
+
+
     const handleNextClick = () => {
         setCurrentInput(currentInput + 1);
     };
@@ -132,6 +138,8 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
             // router.push('/dashboard')
         }
     };
+
+
     return (
         <div className='flex flex-col px-[24px]'>
             <div className='flex h-[90px] items-center px-[24px]'>
@@ -147,24 +155,58 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                 </div>
                 <h2 className='mx-[20px]'>Register</h2>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className='h-full'>
                 {inputFields.map((inputField, index) => {
                     if (index === currentInput) {
                         if (inputField.type === 'checkboxes') {
                             return (
-                                <div className='my-[200px]' key={inputField.name}>
-                                    <label>{inputField.placeholder}</label>
-                                    {['Hiking', 'Reading', 'Cooking', 'Photography', 'Traveling'].map((interest, index) => (
-                                        <div key={interest}>
-                                            <input
-                                                type="checkbox"
-                                                name={interest}
-                                                checked={data.interests.includes(interest)}
-                                                onChange={handleCheckboxChange}
-                                            />
-                                            <label>{interest}</label>
-                                        </div>
-                                    ))}
+                                <div className='my-[20px]' key={inputField.name}>
+                                    <label className='mb-[20px]'>{inputField.placeholder}</label>
+                                    <div className="grid grid-cols-5 gap-10 h-full my-10">
+                                        {[
+                                            'Hiking',
+                                            'Reading',
+                                            'Cooking',
+                                            'Photography',
+                                            'Traveling',
+                                            'Painting',
+                                            'Drawing',
+                                            'Sculpting',
+                                            'Writing',
+                                            'Dancing',
+                                            'Music',
+                                            'Film-making',
+                                            'Acting',
+                                            'Fashion',
+                                            'Pottery',
+                                            'Gardening',
+                                            'Knitting',
+                                            'Woodworking',
+                                            'Calligraphy',
+                                            'Graphic design',
+                                            'Animation',
+                                            'Graffiti',
+                                            'Ceramics',
+                                            'Jewelry making',
+                                            'Embroidery',
+                                        ].map((interest, index) => (
+                                            <div
+                                                key={index}
+                                                className={`p-[20px] border-black border w-[100px] h-[100px] rounded-[100px] ${data.interests.includes(interest) ? 'bg-green-400' : 'bg-red-400'
+                                                    } flex flex-col justify-center items-center focus:bg-red-700 cursor-pointer`}
+                                                onClick={() => handleCheckboxChange(interest)}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    name={interest}
+                                                    defaultChecked={data.interests.includes(interest)}
+                                                    className="hidden"
+                                                />
+                                                <span className="text-sm text-center">{interest}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
                                     <div className='flex justify-between mt-4'>
                                         {currentInput > 0 && (
                                             <button
@@ -235,6 +277,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                 })}
             </form>
         </div>
+
     );
 
 }

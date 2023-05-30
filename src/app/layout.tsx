@@ -1,6 +1,7 @@
 import Providers from '@/components/Providers'
 import './globals.css'
 import { Signika } from 'next/font/google'
+import Footer from '@/components/Footer'
 
 const signika = Signika({ subsets: ['latin'] })
 
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>{children}</Providers>
+        <Footer />
       </body>
     </html>
   )

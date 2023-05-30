@@ -6,9 +6,9 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
     try {
-        let body = req.body
+        let body = req.body;
         console.log(body, 'body');
         const { prompt } = body || {};
         console.log(prompt, 'prompt');
@@ -16,21 +16,18 @@ export default async function handler(req, res) {
         const response = await openai.createImage({
             prompt,
             n: 1,
-            size: "1024x1024"
+            size: "256x256",
         });
 
         console.log(`Response: ${JSON.stringify(response.data.data[0].url)}}`);
 
-
         res.status(200).json({
-            image: response.data.data[0].url
+            image: response.data.data[0].url,
         });
-
-
-    } catch (e) {
+    } catch (e: any) {
         console.log(`Failed to create Pokémon image: ${e.message}`);
         res.status(500).json({
-            error: e.message
+            error: e.message,
         });
     }
 }

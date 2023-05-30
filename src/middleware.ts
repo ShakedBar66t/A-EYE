@@ -41,5 +41,5 @@ export default withAuth(
 )
 
 export const config = {
-    matcher: ['/', '/login', '/about', '/dashboard']
+    matcher: ['/', '/login', '/about', '/dashboard', '/home']
 }
