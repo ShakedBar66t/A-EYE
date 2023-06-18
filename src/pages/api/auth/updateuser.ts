@@ -1,46 +1,31 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import { options } from './[...nextauth]';
-import { notFound } from 'next/navigation';
 import { connectToMongoDB } from '@/lib/mongodb';
-import { getServerSession } from 'next-auth';
+import User from '@/models/user';
 
-const updateUserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const {email, fullName} = req.body
-    console.log(req.body, 'req.body');
-    
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { email, fullName, sessionId } = req.body;
 
+    try {
+        await connectToMongoDB();
 
-    // const session = await getServerSession(options)
-    // console.log(session, 'session')
-    // if (!session) {
-    //     console.log();
-        
-    // }
+        // Find the user document based on the session ID
+        const user = await User.findOne({ sessionId });
 
-    // try {
-    //     const session = await getSession({ req });
-    //     if (!session) {
-    //         res.status(401).json({ message: 'Unauthorized' });
-    //         return;
-    //     }
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
 
-    //     console.log(session, 'session');
+        // Update the user's email and fullName
+        user.email = email;
+        user.fullName = fullName;
+        await user.save();
 
-    //     if (req.method !== 'PUT') {
-    //         res.status(405).json({ message: 'Method not allowed' });
-    //         return;
-    //     }
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
-    //     const { fullName, email } = req.body;
-    //     const userId = session.user?.user_id;
-
-    //     console.log(userId, 'userId');
-
-    //     res.status(200).json({ message: 'User updated successfully' });
-    // } catch (error) {
-    //     res.status(500).json({ message: 'Internal server error' });
-    // }
-};
-
-export default updateUserHandler;

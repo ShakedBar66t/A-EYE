@@ -20,20 +20,47 @@ const page: React.FC<pageProps> = ({ }) => {
   const router = useRouter()
 
   const onSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
+      const session = await getSession();
+      if (!session) {
+        console.log('No session');
+        return;
+      }
+
       const response = await fetch('/api/auth/updateuser', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
-      })
+        body: JSON.stringify({
+          email: formData.email,
+          fullName: formData.fullName,
+          sessionId: session.id,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('User updated successfully');
+
+        // Update the form data with the new values
+        setFormData({
+          email: formData.email,
+          fullName: formData.fullName,
+        });
+
+        // Optionally, you can display a success message or perform other actions.
+      } else {
+        console.error('Failed to update user');
+        // Handle the error case if needed.
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +82,7 @@ const page: React.FC<pageProps> = ({ }) => {
     <div>
       <Navbar />
       <div className='form-shadow m-[100px]'>
-        <form onSubmit={onSaveUser} className='bg-[#fff] rounded-[10px] flex flex-col p-[20px] items-center'>
+        <form onSubmit={onSaveUser} className='bg-[#fff] rounded-[10px] items-center'>
           <div>
             <label htmlFor="email" className='p-[10px]'>Email:</label>
             <input
@@ -78,7 +105,7 @@ const page: React.FC<pageProps> = ({ }) => {
               placeholder="Full Name"
             />
           </div>
-          <button className='hover:opacity-80 py-2 px-6 bg-lime-600 rounded-3xl text-xs uppercase text-white mt-[20px]' type="submit">Save</button>
+          <button className='' type="submit">Save</button>
         </form>
       </div>
     </div>

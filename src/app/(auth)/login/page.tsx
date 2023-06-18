@@ -96,7 +96,7 @@ const page: FC<pageProps> = ({ }) => {
 
                 <button
                     type='submit'
-                    className='bg-blue-400 border border-black rounded-lg w-full mt-2 py-[6px] hover:bg-blue-300'>
+                    className='bg-lime-600 border border-black rounded-lg w-full mt-2 py-[6px] hover:bg-blue-300'>
                     Login
                 </button>
 

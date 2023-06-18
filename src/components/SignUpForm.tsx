@@ -143,16 +143,16 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
     return (
         <div className='flex flex-col px-[24px]'>
             <div className='flex h-[90px] items-center px-[24px]'>
-                <div className='hover:bg-gray-200 flex h-[60px] items-center rounded-full'>
-                    <Link className='mx-[20px]' href='/login'>
+                <Link href='/login'>
+                    <div className='hover:bg-gray-200 flex p-[20px] items-center rounded-full'>
                         <Image
                             src='/return arrow.svg'
                             alt='logo2'
                             width={20}
                             height={20}
                         />
-                    </Link>
-                </div>
+                    </div>
+                </Link>
                 <h2 className='mx-[20px]'>Register</h2>
             </div>
             <form onSubmit={handleSubmit} className='h-full'>
@@ -162,12 +162,11 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                             return (
                                 <div className='my-[20px]' key={inputField.name}>
                                     <label className='mb-[20px]'>{inputField.placeholder}</label>
-                                    <div className="grid grid-cols-5 gap-10 h-full my-10">
+                                    <div className="grid md:grid-cols-5 grid-cols-3 gap-10 h-full my-10">
                                         {[
                                             'Hiking',
                                             'Reading',
                                             'Cooking',
-                                            'Photography',
                                             'Traveling',
                                             'Painting',
                                             'Drawing',
@@ -181,7 +180,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                                             'Pottery',
                                             'Gardening',
                                             'Knitting',
-                                            'Woodworking',
+                                            'Wood working',
                                             'Calligraphy',
                                             'Graphic design',
                                             'Animation',
@@ -192,7 +191,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                                         ].map((interest, index) => (
                                             <div
                                                 key={index}
-                                                className={`p-[20px] border-black border w-[100px] h-[100px] rounded-[100px] ${data.interests.includes(interest) ? 'bg-green-400' : 'bg-red-400'
+                                                className={`p-[20px] border-black border w-[80px] h-[80px] rounded-[100px] ${data.interests.includes(interest) ? 'bg-green-400' : 'bg-red-500'
                                                     } flex flex-col justify-center items-center focus:bg-red-700 cursor-pointer`}
                                                 onClick={() => handleCheckboxChange(interest)}
                                             >
@@ -202,7 +201,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                                                     defaultChecked={data.interests.includes(interest)}
                                                     className="hidden"
                                                 />
-                                                <span className="text-sm text-center">{interest}</span>
+                                                <span className="text-sm text-center p-[10px]">{interest}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -250,7 +249,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ }) => {
                                         {currentInput > 0 && (
                                             <button
                                                 type="button"
-                                                className="mr-4 px-[40px] py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                                                className="mr-4 px-[30px] py-2 bg-blue-500 text-white rounded disabled:opacity-50"
                                                 onClick={handlePreviousClick}
                                                 disabled={validationErrors.length > 0}
                                             >

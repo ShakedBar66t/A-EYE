@@ -6,21 +6,19 @@ import { FC, useEffect, useState } from 'react'
 import SignOutButton from './SignOutButton'
 import DropDown from './DropDown'
 import { Session } from 'next-auth'
-import { useRouter } from 'next/navigation'
 
 interface NavbarProps { }
 
 const Navbar: FC<NavbarProps> = () => {
     const [isMobile, setIsMobile] = useState<boolean>(false)
+    
+
 
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 576)
         }
-
         handleResize()
-
-
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -63,9 +61,10 @@ const Navbar: FC<NavbarProps> = () => {
                             <Link href='/dashboard' className='hover:underline font-bold '>Dashboard</Link>
                         </div>
                     </div>
-                    <div className='bg-red-400 rounded-3xl p-[5px] text-white hover:cursor-pointer hover:bg-red-300 '>
-                        <SignOutButton />
+                    <div className="bg-red-400 rounded-3xl p-[5px] text-white hover:bg-red-300 hover:cursor-pointer">
+                        <SignOutButton className="w-full h-full text-lg" />
                     </div>
+
                 </div>
             );
         }

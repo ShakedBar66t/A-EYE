@@ -47,7 +47,7 @@ body {
 .inputBox input:valid~span,
 .inputBox input:focus~span {
     color: #0091ff;
-    transform: translateX(10px) translateY(-7px);
+    transform: translateX(10px) translateY(-9px);
     font-size: 14px;
     padding: 0 0;
     background: #fff;
